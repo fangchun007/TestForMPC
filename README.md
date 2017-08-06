@@ -72,7 +72,26 @@ We describe the nonlinear programming problem in one step of MPC as follows.
                v_{t+1} - (v_t + a_t * dt) = 0                                  for t \in\{1, 2, \codts, N-1\}
                cte_{t+1} - (f(x_t) - y_t + v_t * \sin(epsi_t) * dt) = 0        for t \in\{1, 2, \codts, N-1\}
                epsi_{t+1} - (psi_t - psides_t + v_t * delta_t * dt / Lf) = 0   for t \in\{1, 2, \codts, N-1\}
-```                            
+```               
+
+### Polynomial Fitting and MPC Preprocessing
+
+Note that the above model and the return values to the simulator, including the MPC predicted trajectory, the waypoints/reference line, are or can be described in the vehicle's system. There is only one moment that we need to receive way points from the map coordinate system. For convenience, we will tranfer these waypoints from the map/global coordinate system to the vehicle/local coordinate system.
+```
+    void globalToLocal(vector<double> &ptsx, vector<double> &ptsy, double px, double py,
+                       double psi, Eigen::VectorXd &xvals, Eigen::VectorXd &yvals)
+    {
+      for (size_t i=0; i<ptsx.size(); i++)
+      {
+        double dx = ptsx[i] - px;
+        double dy = ptsy[i] - py;
+        xvals[i] = dx * cos(-psi) - dy * sin(-psi);
+        yvals[i] = dx * sin(-psi) + dy * cos(-psi);
+      }
+    }
+```
+Then we use a third order polynomial to fit a reference trajectory in the vehicle system.
+
 ## Parameter Tuning
 
 ### Timestep Length N & Elapsed Duration dt
