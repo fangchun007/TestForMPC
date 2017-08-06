@@ -1,5 +1,8 @@
 # Model Predictive Control (MPC)
 
+## Introduction
+
+In this project, we aim to develop a model predictive controller (MPC) to drive the vehicle around a track in Udacity's [simulator](https://github.com/udacity/self-driving-car-sim/releases). 
 
 ## The Model
 
