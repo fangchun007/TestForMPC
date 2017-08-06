@@ -2,9 +2,11 @@
 
 ## Introduction
 
-In this project, we aim to develop a model predictive controller (MPC) to drive the vehicle around a track in Udacity's [simulator](https://github.com/udacity/self-driving-car-sim/releases). 
+In this project, we aim to develop a model predictive controller (MPC) to drive the vehicle around a track in Udacity's [simulator](https://github.com/udacity/self-driving-car-sim/releases), which communicates telemetry and track waypoints via websocket. As a return, MPC produces a steering value and a acceleration/deceleration value and send them back to the simultor to control the vehicle. 
 
 ## The Model
+
+The model we used here is a kinematic bicycle model.
 
 ```
     State vector: [x, y, psi, v, cte, epsi]
