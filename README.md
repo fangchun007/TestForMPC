@@ -23,11 +23,14 @@ Code line 76-84 is not necessary. They are used for testing and observation.
 ```
 ## The Model
 
-### state vector: [x, y, psi, v, cte, epsi]
-* x: position of vehicle in the x direction
-        * y: position of vehicle in the y direction
-        * psi: orientation of vehicle
-        * v: speed of vehicle
+  ### state vector: [x, y, psi, v, cte, epsi]
+  * x: position of vehicle in the x direction
+  
+  * y: position of vehicle in the y direction
+  
+  * psi: orientation of vehicle
+  
+  * v: speed of vehicle
         * cte: cross track error
         * epsi: orientation error
     
