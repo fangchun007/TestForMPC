@@ -9,7 +9,8 @@ Code line 76-84 is not necessary. They are used for testing and observation.
 ## The Model
 
 ```
-    state vector: [x, y, psi, v, cte, epsi]
+    State vector: [x, y, psi, v, cte, epsi]
+    
         x: position of vehicle in the x direction
         y: position of vehicle in the y direction
         psi: orientation of vehicle
@@ -17,26 +18,20 @@ Code line 76-84 is not necessary. They are used for testing and observation.
         cte: cross track error
         epsi: orientation error
     
-    actuator: [delta, a]
+    Actuator: [delta, a]
+    
         delta: steering angle [-25°, 25°]
         a: acceleration/decceleration [-1, 1]
-```
-## The Model
-
-  ### state vector: [x, y, psi, v, cte, epsi]
-  * x: position of vehicle in the x direction
-  
-  * y: position of vehicle in the y direction
-  
-  * psi: orientation of vehicle
-  
-  * v: speed of vehicle
-        * cte: cross track error
-        * epsi: orientation error
     
-### actuator: [delta, a]
- * delta: steering angle [-25°, 25°]
- * a: acceleration/decceleration [-1, 1]
+    Update equations:
+    
+        x_{t+1}    = x_t + v_t * \cos(psi_t) * dt                   
+        y_{t+1}    = y_t + v_t * \sin(psi_t) * dt                    
+        psi_{t+1}  = psi_t + v_t * delta_t * dt / Lf                 
+        v_{t+1}    = v_t + a_t * dt                               
+        cte_{t+1}  = f(x_t) - y_t + v_t * \sin(epsi_t) * dt    
+        epsi_{t+1} = psi_t - psides_t + v_t * delta_t * dt / Lf
+```
 
 
 ## Optimization/Nonlinear Programming
