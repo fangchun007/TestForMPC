@@ -46,9 +46,11 @@ We describe the nonlinear programming problem in one step of MPC as follows.
                             c_3 * (v_t - v_ref)^2 +
                             c_4 * delta_t^2 +
                             c_5 * a_t^2 +
-                            c_6 * (cte_{t+1} - cte_t)^2 +
-                            c_7 * (epsi_{t+1} - epsi_t)^2 +
-                            c_8 * curvature_t * v_t +
+                            c_6 * (delta_{t+1} - delta_t)^2 +
+                            c_7 * (a_{t+1} - a_t)^2 +
+                            c_8 * (cte_{t+1} - cte_t)^2 +
+                            c_9 * (epsi_{t+1} - epsi_t)^2 +
+                            c_10 * curvature_t * v_t +
                             \cdots
     Subject To -\inf < x_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
                -\inf < y_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
@@ -79,9 +81,15 @@ Note that the duration N\*dt over which future predictions are made will determi
 
 ### Tuning Cost Function
 
-#### c1, c2, c3, c4, c5, c6, c7
+#### c1, c2, c3, c4, c5, c6, c7, c8, c9
 
-At the very begining, I didn't consider the affection of curvature of the reference line. We start with the tuning of parameters c1, c2, ..., c7. Intuitively, the bigger ci is, the more influence of i-th component will have 
+In the begining, we won't consider the affection of curvature of the reference line. Namely, set c10 = 0. Let's start with the tuning of parameters c1, c2, ..., c9 (corresponding to x, y, psi, v, cte, epsi respectively). Intuitively, the bigger ci is, the higher influence for the i-th component. After several tries, we find that the part of cost caused by steering angle, corresponding to c4, is critical to a stable drive. It is reasonable since in a stable driving (duration time N*\dt) one don't need too much steering. For similar reason, we give a high rate to the gap between sequential steering angles. To decrease oscillations, we also consider and give high rates to the gap between sequential cross track error and epsi. In order to obtain a good acceleration/deceleration when run along a curve, we don't plan to punish too much on c5 and c7. In the end, we obtained an OK but possibly not the best parameters.
+```
+    (c1, c2, c3, c4, c5, c6, c7, c8, c9) = (10, 2, 1, 1000, 1, 200, 1, 100, 200) // 
+```
+### c10
+
+
 
 
 Thus N determines the number of variables optimized by the MPC. This is also the major driver of computational cost.
