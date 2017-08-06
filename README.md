@@ -1,6 +1,6 @@
 # Model Predictive Control (MPC)
 
-Project 5, Term 2, Self-Driving Car Engineer Nanodegree Program
+  Project 5, Term 2, Self-Driving Car Engineer Nanodegree Program
 ------------------------
 
 ## The Model
