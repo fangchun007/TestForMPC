@@ -15,7 +15,7 @@ With more detail, let's assume that the current state [x, y, psi, v, cte, epsi] 
 
 The following is the model of MPC in one step. 
 ```
-     minimize \sum_{t=0}^{N} c_1 * (cte_t - cte_ref)^2 +
+    minimize \sum_{t=1}^{N} c_1 * (cte_t - cte_ref)^2 +
                             c_2 * (epsi_t - epsi_ref)^2 +
                             c_3 * (v_t - v_ref)^2 +
                             c_4 * delta_t^2 +
@@ -24,6 +24,29 @@ The following is the model of MPC in one step.
                             c_7 * (epsi_{t+1} - epsi_t)^2 +
                             c_8 * curvature_t * v_t +
                             \cdots
+    subject to -\inf < x_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
+               -\inf < y_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
+               -\inf < psi_t < +\inf                                           for t \in\{1, 2, \cdots, N\}
+               -\inf < v_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
+               -\inf < cte_t < +\inf                                           for t \in\{1, 2, \cdots, N\}
+               -\inf < epsi_t < +\inf                                          for t \in\{1, 2, \cdots, N\}
+               -0.436332 <= delta_t <= 0.436332                                for t \in\{1, 2, \codts, N-1\}
+               -1 <= a_t <= 1                                                  for t \in\{1, 2, \codts, N-1\}
+               x_1    = x1
+               y_1    = y1
+               psi_1  = psi1
+               v_1    = v1
+               cte_1  = cte1
+               epsi_1 = epsi1
+               x_{t+1} - (x_t + v_t * \cos(psi_t) * dt) = 0                    for t \in\{1, 2, \codts, N-1\}
+               y_{t+1} - (y_t + v_t * \sin(psi_t) * dt) = 0                    for t \in\{1, 2, \codts, N-1\}
+               psi_{t+1} - (psi_t + v_t * delta_t * dt / Lf)                   for t \in\{1, 2, \codts, N-1\}
+               v_{t+1} - (v_t + a_t * dt) = 0                                  for t \in\{1, 2, \codts, N-1\}
+               cte_{t+1} - (f(x_t) - y_t + v_t * \sin(epsi_t) * dt) = 0        for t \in\{1, 2, \codts, N-1\}
+               epsi_{t+1} - (psi_t - psides_t + v_t * delta_t * dt / Lf) = 0   for t \in\{1, 2, \codts, N-1\}
+               
+               
+               
 ```                            
 
 2. Parameter Tuning
