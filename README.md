@@ -21,6 +21,20 @@ Code line 76-84 is not necessary. They are used for testing and observation.
         delta: steering angle [-25°, 25°]
         a: acceleration/decceleration [-1, 1]
 ```
+## The Model
+
+### state vector: [x, y, psi, v, cte, epsi]
+* x: position of vehicle in the x direction
+        * y: position of vehicle in the y direction
+        * psi: orientation of vehicle
+        * v: speed of vehicle
+        * cte: cross track error
+        * epsi: orientation error
+    
+### actuator: [delta, a]
+ * delta: steering angle [-25°, 25°]
+ * a: acceleration/decceleration [-1, 1]
+
 
 ## Optimization/Nonlinear Programming
 
