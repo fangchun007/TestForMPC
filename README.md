@@ -113,7 +113,7 @@ With the above setting, the vehicle can run at a speed of around 60 mph. To reac
 ```
     options += "Numeric max_cpu_time          3\n"; 
 ```
-In this project, we consider the curvature of the reference trajectory. By observation, we find that the green line (predicted trajectory) and yellow line (reference trajectory) agree well when the vehicle is driving along a straight line. However, their differences become big when the vehicle goes to a turn. We are going introduce the product of the curvature of the reference trajectory and the present speed to the cost function, so that we can control the speed of vehicle when it goes to a turn. 
+In this project, we consider the curvature of the reference trajectory instead. By observation, we find that the green line (predicted trajectory) and yellow line (reference trajectory) agree well when the vehicle is driving along a straight line. However, their differences become big when the vehicle is turning. We are going introduce the product of the curvature of the reference trajectory and the present speed to the cost function, so that we can control the speed of vehicle when it is turning. 
 
 ```
 // Add the affection of curvature
@@ -123,6 +123,11 @@ In this project, we consider the curvature of the reference trajectory. By obser
       AD<double> denominator = CppAD::pow(1 + CppAD::pow(coeffs[1] + 2 * coeffs[2] * vars[x_start + t] + 3 * coeffs[3] * vars[x_start + t] * vars[x_start + t], 2), 3/2);
       fg[0] += 1000 * numerator/denominator * vars[v_start + t];
     }
+```
+**Local expression of curvature**
+Suppose the curve is $y = f(x)$. The the curvature at point $x$ is:
+```
+\kappa = \frac{\|f''(x)\|}{(1+f'^2(x))^{3/2}}
 ```
 
 
