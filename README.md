@@ -109,7 +109,21 @@ In the begining, we won't consider the affection of curvature of the reference l
 ```
 #### c10
 
-With above setting, one possibly can 
+With the above setting, the vehicle can run at a speed of around 60 mph. To reach a higher speed, one method is to decrease N from 10 to 9 or 8. The idea is to increase the accuracy of optimizated solution. In this way, it is possible that increasing the *Numeric max_cpu_time* can be also helpful. 
+```
+    options += "Numeric max_cpu_time          3\n"; 
+```
+In this project, we consider the curvature of the reference trajectory. By observation, we find that the green line (predicted trajectory) and yellow line (reference trajectory) agree well when the vehicle is driving along a straight line. However, their differences become big when the vehicle goes to a turn. We are going introduce the product of the curvature of the reference trajectory and the present speed to the cost function, so that we can control the speed of vehicle when it goes to a turn. 
+
+```
+// Add the affection of curvature
+    for (size_t t=0; t<N-1; t++)
+    {
+      AD<double> numerator = CppAD::abs(2 * coeffs[2] + 6 * coeffs[3] * vars[x_start + t]);
+      AD<double> denominator = CppAD::pow(1 + CppAD::pow(coeffs[1] + 2 * coeffs[2] * vars[x_start + t] + 3 * coeffs[3] * vars[x_start + t] * vars[x_start + t], 2), 3/2);
+      fg[0] += 1000 * numerator/denominator * vars[v_start + t];
+    }
+```
 
 
 
