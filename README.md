@@ -33,16 +33,15 @@ Code line 76-84 is not necessary. They are used for testing and observation.
         epsi_{t+1} = psi_t - psides_t + v_t * delta_t * dt / Lf
 ```
 
+## Optimization / Nonlinear Programming
 
-## Optimization/Nonlinear Programming
+The nature of Model Predictive Control (MPC) is to reframe the task of following a trajectory as an  optimization/nonlinear programming problem. The solution of the optimization problem is the optimal trajectory. 
 
-The nature of Model Predictive Control (MPC) is to reframe the task of following a trajectory as an  optimization/nonlinear programming problem. The solution of the optimization problem is the optimal trajectory. In other words, MPC simulate different actuating inputs and predict corresponding trajectory, then select the trajectory with the minimal cost. 
+With more detail, MPC simulate different actuating inputs and predict corresponding trajectory, then select the trajectory with the minimal cost. Let's assume that the current state [x, y, psi, v, cte, epsi] and the reference trajectory we want to follow or waypoints  are known. MPC optimize actuator [delta, a] in order to minimize the cost of predicted trajectory. Once the lowest cost trajectory is found, we implement the very first actuation. Then we take a new state and use that with the new reference trajectory to calculate a new optimal trajectory. In this sense, MPC is actually a constantly calculating new optimal trajectory method. 
 
-With more detail, let's assume that the current state [x, y, psi, v, cte, epsi] and the reference trajectory we want to follow are known. MPC optimize actuator [delta, acceleration] in order to minimize the cost of predicted trajectory. Once the lowest cost trajectory is found, we implement the very first actuation. Then we take a new state and use that with the new reference trajectory to calculate a new optimal trajectory. In that sense, MPC is actually a constantly calculating new optimal trajectory method. 
-
-The following is the model of MPC in one step. 
+We describe the nonlinear programming problem in one step of MPC as follows. 
 ```
-    minimize \sum_{t=1}^{N} c_1 * (cte_t - cte_ref)^2 +
+    Minimize \sum_{t=1}^{N} c_1 * (cte_t - cte_ref)^2 +
                             c_2 * (epsi_t - epsi_ref)^2 +
                             c_3 * (v_t - v_ref)^2 +
                             c_4 * delta_t^2 +
@@ -51,7 +50,7 @@ The following is the model of MPC in one step.
                             c_7 * (epsi_{t+1} - epsi_t)^2 +
                             c_8 * curvature_t * v_t +
                             \cdots
-    subject to -\inf < x_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
+    Subject to -\inf < x_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
                -\inf < y_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
                -\inf < psi_t < +\inf                                           for t \in\{1, 2, \cdots, N\}
                -\inf < v_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
@@ -71,9 +70,6 @@ The following is the model of MPC in one step.
                v_{t+1} - (v_t + a_t * dt) = 0                                  for t \in\{1, 2, \codts, N-1\}
                cte_{t+1} - (f(x_t) - y_t + v_t * \sin(epsi_t) * dt) = 0        for t \in\{1, 2, \codts, N-1\}
                epsi_{t+1} - (psi_t - psides_t + v_t * delta_t * dt / Lf) = 0   for t \in\{1, 2, \codts, N-1\}
-               
-               
-               
 ```                            
 ## Parameter Tuning
 
