@@ -79,16 +79,24 @@ We describe the nonlinear programming problem in one step of MPC as follows.
 
 Note that the duration N\*dt over which future predictions are made will determine the length of predictive trajectory (green line in the simulator). It further determines how much future information will be collected and be used to produce a good actuator. This is critical when the vehicle is driving around a curve. After several tries at the same speed of 30 m/s, such as (N,dt) = (20,0.05), (20,0.07),(20,0.1), (15,0.07), (15,0.1), (10,0.1), (10,0.15), (8,0.1), we decide to choose (N,dt) = (10,0.1) as the candidate in our coming experiments. First, it looks like the duration time 2s is unnecessarily long, which will lower down the computation efficiency, increase the cost, and actually lower down the accuracy (note we only implement the very first actuate). Second, when the duration time is less than 1s, we start to concern whether we can obtain enough front infomation to make a good decision. We also found if dt is 0.05, the vehicle adjust its orientation too frequent to obtain a stable drive even along an almost straight line. We didn't choose dt=0.15 although it worked well, because we expect some troubles when we try to reach a higher speed.
 
+### Latency
+
+From the main.cpp, one can find the following command.
+```
+    this_thread::sleep_for(chrono::milliseconds(100));
+```
+Namely, the simulator will recieve actuator values with a latency of at least 100 milliseconds.
+
 ### Tuning Cost Function
 
 #### c1, c2, c3, c4, c5, c6, c7, c8, c9
 
 In the begining, we won't consider the affection of curvature of the reference line. Namely, set c10 = 0. Let's start with the tuning of parameters c1, c2, ..., c9 (corresponding to x, y, psi, v, cte, epsi respectively). Intuitively, the bigger ci is, the higher influence for the i-th component. After several tries, we find that the part of cost caused by steering angle, corresponding to c4, is critical to a stable drive. It is reasonable since in a stable driving (duration time N*\dt) one don't need too much steering. For similar reason, we give a high rate to the gap between sequential steering angles. To decrease oscillations, we also consider and give high rates to the gap between sequential cross track error and epsi. In order to obtain a good acceleration/deceleration when run along a curve, we don't plan to punish too much on c5 and c7. In the end, we obtained an OK but possibly not the best parameters.
 ```
-    (c1, c2, c3, c4, c5, c6, c7, c8, c9) = (10, 2, 1, 1000, 1, 200, 1, 100, 200) // 
+    (c1, c2, c3, c4, c5, c6, c7, c8, c9) = (10, 2, 1, 1000, 1, 200, 1, 100, 200)
 ```
-### c10
-
+#### c10
+With above setting, one possibly can 
 
 
 
