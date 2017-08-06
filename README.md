@@ -15,7 +15,7 @@ With more detail, let's assume that the current state [x, y, psi, v, cte, epsi] 
 
 The following is the model of MPC in one step. 
 
-    minimize \sum_{t=0}^{N} c_1 * (cte_t - cte_ref)^2 +
+     minimize \sum_{t=0}^{N} c_1 * (cte_t - cte_ref)^2 +
                             c_2 * (epsi_t - epsi_ref)^2 +
                             c_3 * (v_t - v_ref)^2 +
                             c_4 * delta_t^2 +
