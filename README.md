@@ -81,13 +81,25 @@ Note that the duration N\*dt over which future predictions are made will determi
 
 ### Latency
 
-From the main.cpp, one can find the following command.
+From the file *main.cpp*, one can find the following command.
 ```
     this_thread::sleep_for(chrono::milliseconds(100));
 ```
-Namely, the simulator will recieve actuator values with a latency of at least 100 milliseconds. This is used to mimic the real latency in a real car. For our problem, we will try the following method to determine a latency.
+Namely, the simulator will recieve actuator values with a latency of at least 100 milliseconds. This is used to mimic the real latency of a real car. In this project, we use the elapse time of function *h.onMessage* during the last step as an estimated latency of the present step. 
 
-### Tuning Cost Function
+To do that, we use *time_pre* to record the time moment when the previous round of *h.onMessage()* begin to work. 
+```
+    time_pre = std::chrono::system_clock::now();
+```
+And use *latency_pre* to save the elapse time of finishing the function *h.onMessage()* during the previous step.
+
+```
+std::chrono::duration<double> elapsed_seconds = std::chrono::system_clock::now() - time_pre;
+double latency_pre = elapsed_seconds.count();
+```
+To handle with some unexpected high latency value, we ignore the latency values higher than 0.25 s.
+
+### Tuning The Cost Function
 
 #### c1, c2, c3, c4, c5, c6, c7, c8, c9
 
@@ -96,6 +108,7 @@ In the begining, we won't consider the affection of curvature of the reference l
     (c1, c2, c3, c4, c5, c6, c7, c8, c9) = (10, 2, 1, 1000, 1, 200, 1, 100, 200)
 ```
 #### c10
+
 With above setting, one possibly can 
 
 
