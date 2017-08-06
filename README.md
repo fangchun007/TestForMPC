@@ -85,7 +85,7 @@ From the main.cpp, one can find the following command.
 ```
     this_thread::sleep_for(chrono::milliseconds(100));
 ```
-Namely, the simulator will recieve actuator values with a latency of at least 100 milliseconds.
+Namely, the simulator will recieve actuator values with a latency of at least 100 milliseconds. This is used to mimic the real latency in a real car. For our problem, we will try the following method to determine a latency.
 
 ### Tuning Cost Function
 
