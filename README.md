@@ -50,7 +50,7 @@ We describe the nonlinear programming problem in one step of MPC as follows.
                             c_7 * (epsi_{t+1} - epsi_t)^2 +
                             c_8 * curvature_t * v_t +
                             \cdots
-    Subject to -\inf < x_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
+    Subject To -\inf < x_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
                -\inf < y_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
                -\inf < psi_t < +\inf                                           for t \in\{1, 2, \cdots, N\}
                -\inf < v_t < +\inf                                             for t \in\{1, 2, \cdots, N\}
@@ -75,7 +75,11 @@ We describe the nonlinear programming problem in one step of MPC as follows.
 
 ### Timestep Length N & Elapsed Duration dt
 
-Note that the duration N\*dt over which future predictions are made will determine the length of predictive trajectory (green line in the simulator). It further determines how much future information will be collected and be used to produce a good actuator. This is critical when the vehicle is driving around a curve. After several tries at the same speed of 30m/s, such as (N,dt)=(20,0.05),(20,0.07),(20,0.1),(15,0.07),(15,0.1),(10,0.1),(10,0.15),(8,0.1). e find the duration 1s can contain enough future infomation, even when the vehicle is driving round a curve. 
+Note that the duration N\*dt over which future predictions are made will determine the length of predictive trajectory (green line in the simulator). It further determines how much future information will be collected and be used to produce a good actuator. This is critical when the vehicle is driving around a curve. After several tries at the same speed of 30 m/s, such as (N,dt) = (20,0.05), (20,0.07),(20,0.1), (15,0.07), (15,0.1), (10,0.1), (10,0.15), (8,0.1), we decide to choose (N,dt) = (10,0.1) as the candidate in our coming experiments. First, it looks like the duration time 2s is unnecessarily long, which will lower down the computation efficiency, increase the cost, and actually lower down the accuracy (note we only implement the very first actuate). Second, when the duration time is less than 1s, we start to concern whether we can obtain enough front infomation to make a good decision. We also found if dt is 0.05, the vehicle adjust its orientation too frequent to obtain a stable drive even along an almost straight line. We didn't choose dt=0.15 although it worked well, because we expect some troubles when we try to reach a higher speed.
+
+
+
+
 Thus N determines the number of variables optimized by the MPC. This is also the major driver of computational cost.
 
 
