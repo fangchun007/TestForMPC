@@ -116,7 +116,7 @@ With the above setting, the vehicle can run at a speed of around 60 mph. To reac
 In this project, we consider the curvature of the reference trajectory instead. By observation, we find that the green line (predicted trajectory) and yellow line (reference trajectory) agree well when the vehicle is driving along a straight line. However, their differences become big when the vehicle is turning. We are going introduce the product of the curvature of the reference trajectory and the present speed to the cost function, so that we can control the speed of vehicle when it is turning. 
 
 ```
-// Add the affection of curvature
+    // Add the affection of curvature
     for (size_t t=0; t<N-1; t++)
     {
       AD<double> numerator = CppAD::abs(2 * coeffs[2] + 6 * coeffs[3] * vars[x_start + t]);
@@ -127,12 +127,11 @@ In this project, we consider the curvature of the reference trajectory instead. 
 **Local expression of curvature**
 Suppose the curve is $y = f(x)$. The the curvature at point $x$ is:
 ```
-\kappa = \frac{\|f''(x)\|}{(1+f'^2(x))^{3/2}}
+    \kappa = \frac{\|f''(x)\|}{(1+f'^2(x))^{3/2}}
 ```
+If we print out the curvatures, one can find the values are around 0.001 to 0.04. Since the cost when c10=0 is around 50, it is reasonable to set c10 to 1000. Of course, one can adjust this parameter further in order to obtain much better result.  
 
 
-
-Thus N determines the number of variables optimized by the MPC. This is also the major driver of computational cost.
 
 
 
