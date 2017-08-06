@@ -73,3 +73,12 @@ We describe the nonlinear programming problem in one step of MPC as follows.
 ```                            
 ## Parameter Tuning
 
+### Timestep Length N & Elapsed Duration dt
+
+Note that the duration N\*dt over which future predictions are made will determine the length of predictive trajectory (green line in the simulator). It further determines how much future information will be collected and be used to produce a good actuator. This is critical when the vehicle is driving around a curve. After several tries at the same speed of 30m/s, such as (N,dt)=(20,0.05),(20,0.07),(20,0.1),(15,0.07),(15,0.1),(10,0.1),(10,0.15),(8,0.1). e find the duration 1s can contain enough future infomation, even when the vehicle is driving round a curve. 
+Thus N determines the number of variables optimized by the MPC. This is also the major driver of computational cost.
+
+
+
+
+
