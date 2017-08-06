@@ -77,7 +77,11 @@ We describe the nonlinear programming problem in one step of MPC as follows.
 
 Note that the duration N\*dt over which future predictions are made will determine the length of predictive trajectory (green line in the simulator). It further determines how much future information will be collected and be used to produce a good actuator. This is critical when the vehicle is driving around a curve. After several tries at the same speed of 30 m/s, such as (N,dt) = (20,0.05), (20,0.07),(20,0.1), (15,0.07), (15,0.1), (10,0.1), (10,0.15), (8,0.1), we decide to choose (N,dt) = (10,0.1) as the candidate in our coming experiments. First, it looks like the duration time 2s is unnecessarily long, which will lower down the computation efficiency, increase the cost, and actually lower down the accuracy (note we only implement the very first actuate). Second, when the duration time is less than 1s, we start to concern whether we can obtain enough front infomation to make a good decision. We also found if dt is 0.05, the vehicle adjust its orientation too frequent to obtain a stable drive even along an almost straight line. We didn't choose dt=0.15 although it worked well, because we expect some troubles when we try to reach a higher speed.
 
+### Tuning Cost Function
 
+#### c1, c2, c3, c4, c5, c6, c7
+
+At the very begining, I didn't consider the affection of curvature of the reference line. We start with the tuning of parameters c1, c2, ..., c7. Intuitively, the bigger ci is, the more influence of i-th component will have 
 
 
 Thus N determines the number of variables optimized by the MPC. This is also the major driver of computational cost.
